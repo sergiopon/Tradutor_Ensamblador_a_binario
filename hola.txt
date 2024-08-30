@@ -1,0 +1,75 @@
+Importaciones
+
+import sys
+from ensamblador import ensambladorabinario
+from datos import instrucciones, tipoR, tipoI, tipoJ, registros
+
+import sys: Importa el módulo sys que proporciona acceso a algunas variables y funciones que interactúan fuertemente con el intérprete.
+from ensamblador import ensambladorabinario: Importa una función o clase llamada ensambladorabinario desde el módulo ensamblador.
+from datos import instrucciones, tipoR, tipoI, tipoJ, registros: Importa varias variables (instrucciones, tipoR, tipoI, tipoJ, registros) desde el módulo datos.
+
+
+Función principal
+def principal():
+    g = "10008000"
+    gp = int(g, 16)
+    s = "7ffffffc"
+    sp = int(s, 16)
+    pc = 0
+    memini = "0x00400000"
+    instrucciones_lista = []
+    ramas = {}
+    lista_temporal = []
+
+Define la función principal.
+Inicializa varias variables:
+g y s son direcciones en formato hexadecimal.
+gp y sp son las conversiones de g y s a enteros.
+pc es el contador de programa, inicializado a 0.
+memini es la dirección inicial de memoria en formato hexadecimal.
+instrucciones_lista es una lista vacía que almacenará las instrucciones.
+ramas es un diccionario que almacenará etiquetas y sus direcciones.
+lista_temporal es una lista temporal para almacenar datos intermedios.
+
+for partes in sys.stdin:
+    partes = partes.strip().split()
+    if not partes:
+        break
+    for x in range(len(partes) - 1):
+        if x != 0:
+            partes[x] = partes[x][:-1]
+    instrucciones_lista.append(partes)
+
+Lee las instrucciones desde la entrada estándar (sys.stdin).
+Para cada línea de entrada:
+Elimina espacios en blanco y divide la línea en partes.
+Si la línea está vacía, rompe el bucle.
+Elimina el último carácter de cada parte (excepto la primera).
+Añade las partes a instrucciones_lista.
+
+for j in range(len(instrucciones_lista)):
+    if instrucciones_lista[j][0][-1] == ":":
+        lista_temporal.append(memini)
+        lista_temporal.append(pc)
+        cad = instrucciones_lista[j][0][:-1]
+        ramas[cad] = lista_temporal
+        lista_temporal = []
+        memini = int(memini, 16)
+        memini = memini - 4
+        memini = hex(memini)
+        memini = str(memini)
+    elif instrucciones_lista[j][0] != 'j' or instrucciones_lista[j][0] != 'jal':
+        pc += 4
+
+        Itera sobre instrucciones_lista.
+Si una instrucción termina con :, se trata de una etiqueta:
+Añade memini y pc a lista_temporal.
+Elimina : de la etiqueta y la añade al diccionario ramas con lista_temporal.
+Resetea lista_temporal.
+Convierte memini a entero, resta 4, y la convierte de nuevo a hexadecimal y a cadena.
+Si la instrucción no es j o jal, incrementa pc en 4.
+
+Archivos Importados
+ensamblador.py: Contiene la función o clase ensambladorabinario, que probablemente convierte instrucciones a código binario.
+datos.py: Contiene las variables instrucciones, tipoR, tipoI, tipoJ, registros, que probablemente definen las instrucciones y tipos de instrucciones del ensamblador.
+Este es un resumen detallado del código proporcionado. Si necesitas más detalles sobre alguna parte específica o sobre los archivos importados, por favor házmelo saber.
