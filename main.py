@@ -20,7 +20,7 @@ def principal():
             break
         for x in range(len(partes) - 1):  # Itera sobre las partes de la línea
             if x != 0:
-                partes[x] = partes[x][:-1]  # Elimina el último carácter de cada parte (excepto la primera)
+                partes[x] = partes[x][:-1]  # Elimina el último carácter de cada parte
         instrucciones_lista.append(partes)  # Añade las partes a la lista de instrucciones
 
     # Procesa las instrucciones
@@ -40,6 +40,9 @@ def principal():
         memini = int(memini, 16)  # Convierte la dirección de memoria a entero
         memini = memini + 4  # Suma 4 a la dirección de memoria
         memini = hex(memini)  # Convierte la dirección de memoria de nuevo a hexadecimal
+    
+    #procesamiento de funciones asm
+    
     for i in range(len(instrucciones_lista)):
         if len(instrucciones_lista[i]) == 1:
             pass
